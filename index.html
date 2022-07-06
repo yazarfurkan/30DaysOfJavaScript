@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    
+    <script>
+
+        const body = document.querySelector("body");
+
+        const user = {
+            name: 'Furkan',
+            salary: 10000
+        }
+
+        const writeToWeb = function() {
+        return body.innerHTML = `<div>
+            <p>Name: ${user.name} <span></span></p>
+            <p>Salary: ${user.salary} <span></span></p>
+            <button>Calculate</button>
+        </div>`
+        }
+
+        writeToWeb();
+
+        // 0. add event listener to button and run the code below inside of event.
+        // 1. create p element.
+        // 2. create span
+        // 3. add total value to span as text
+        // 4. put span inside p
+        // 5. put p to a first div in the body as last element
+
+        const calculateTotal = function() {
+            return `${user.salary * 12}`;
+            };
+
+        document.addEventListener('click', () => {
+            const newP = document.createElement('p');
+            const newSpan =document.createElement('span');
+            newP.innerText = "Total: ";
+            newSpan.innerText = calculateTotal();
+            newP.appendChild(newSpan);
+            body.appendChild(newP);
+        });
+        
+    </script>
+</body>
+</html>
