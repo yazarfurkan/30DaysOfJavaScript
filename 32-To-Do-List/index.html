@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>JS To-Do-List</title>
+    <link rel="stylesheet" href="style.css" />
+    <script
+      src="https://kit.fontawesome.com/1184904feb.js"
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div class="background">
+      <div class="upper-background"></div>
+      <div class="to-do-list">
+        <h1>TODO</h1>
+        <div class="to-do-list-upper">
+          <div class="to-do-list-upper-item">
+            <div class="checkbox"></div>
+            <form action="">
+              <input
+                type="text"
+                id="fname"
+                name="fname"
+                method="post"
+                class="addItem"
+              />
+            </form>
+          </div>
+        </div>
+        <div class="to-do-list-lower">
+          <!-- <div class="to-do-list-lower-item checked-item">
+            <div class="checkbox checked">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <p>Complete online JavaScript course</p>
+          </div>
+
+          <div class="to-do-list-lower-item">
+            <div class="checkbox"></div>
+            <p>Jog around the park</p>
+          </div>
+          <div class="to-do-list-lower-item">
+            <div class="checkbox"></div>
+            <p>Read for 1 hour</p>
+          </div>
+          <div class="to-do-list-lower-item">
+            <div class="checkbox"></div>
+            <p>Pick up groceries</p>
+          </div>
+          <div class="to-do-list-lower-item">
+            <div class="checkbox"></div>
+            <p>10 minutes meditation</p>
+          </div>
+          <div class="to-do-list-lower-item">
+            <div class="checkbox"></div>
+            <p>Complete Todo App</p>
+          </div> -->
+        </div>
+        <div class="to-do-list-lowest-item">
+          <div class="to-do-list-lowest-item-left">
+            <p>5 items left</p>
+          </div>
+          <div class="to-do-list-lowest-item-middle">
+            <p class="to-do-list-lowest-item-middle-all">All</p>
+            <p class="to-do-list-lowest-item-middle-active">Active</p>
+            <p class="to-do-list-lowest-item-middle-completed">Completed</p>
+          </div>
+          <div class="to-do-list-lowest-item-right">
+            <p>Clear completed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Bu bir liste
+      // listenin iki itemı var
+      // Her item bir obje
+      // Her item id, isCompleted, ve toDo text değeri olacak
+
+      const listData = [
+        {
+          id: 1,
+          isTrue: true,
+          toDo: "Complete online JavaScript course",
+        },
+        {
+          id: 2,
+          isTrue: false,
+          toDo: "Jog around the park",
+        },
+      ];
+
+      let list = [...listData];
+
+      /*
+      <!-- <div class="to-do-list-lower-item checked-item">
+            <div class="checkbox checked">
+              <i class="fa-solid fa-check"></i>
+            </div>
+            <p>Complete online JavaScript course</p>
+          </div>
+
+          <div class="to-do-list-lower-item">
+            <div class="checkbox"></div>
+            <p>Jog around the park</p>
+          </div>
+          */
+
+      // Query Selector
+      const addItem = document.querySelector(".addItem");
+      const checkboxItem = document.querySelectorAll(".checkbox");
+      const clickedAll = document.querySelector(
+        ".to-do-list-lowest-item-middle-all"
+      );
+      const clickedActive = document.querySelector(
+        ".to-do-list-lowest-item-middle-active"
+      );
+      const clickedCompleted = document.querySelector(
+        ".to-do-list-lowest-item-middle-completed"
+      );
+      const removeItems = document.querySelector(
+        ".to-do-list-lowest-item-right"
+      );
+
+      const listElement = document.querySelector(".to-do-list-lower");
+
+      function renderList() {
+        list.forEach(function (listItem) {
+          const newListItem = document.createElement("div");
+          newListItem.classList.add("to-do-list-lower-item");
+          newListItem.addEventListener("click", function (e) {
+            list = list.map(function (i) {
+              listElement.textContent = "";
+              if (listItem.id === i.id) {
+                return { ...i, isTrue: i.isTrue === false ? true : false };
+              } else {
+                return { ...i };
+              }
+            });
+            renderList();
+          });
+
+          const newCheckbox = document.createElement("div");
+          newCheckbox.classList.add("checkbox");
+          const newListText = document.createElement("p");
+          newListText.textContent = listItem.toDo;
+
+          if (listItem.isTrue === true) {
+            newListItem.classList.add("checked-item");
+            newCheckbox.classList.add("checked");
+            const newListIcon = document.createElement("i");
+            newListIcon.classList.add("fa-solid");
+            newListIcon.classList.add("fa-check");
+            newListIcon.setAttribute("id", "iconid");
+            newCheckbox.setAttribute("id", "checkboxid");
+            newCheckbox.appendChild(newListIcon);
+          }
+
+          newListItem.appendChild(newCheckbox);
+          newListItem.appendChild(newListText);
+          listElement.appendChild(newListItem);
+        });
+      }
+
+      renderList();
+
+      // Functions
+      function addNewItem(e) {
+        console.log(e);
+        const keyCode = e.code || e.key;
+        // console.log({
+        //   keyCode,
+        //   x: e.code,
+        //   y: e.key,
+        // });
+        // console.log(keyCode);
+        if (keyCode == "Enter" || keyCode == "NumpadEnter") {
+          e.preventDefault();
+          console.log(listElement.textContent);
+          listElement.textContent = "";
+          list.push({
+            id: list.length + 1,
+            isTrue: false,
+            toDo: e.target.value,
+          });
+          renderList();
+          addItem.value = "";
+        }
+      }
+
+      function checkTheItem(e) {
+        console.log("It works");
+      }
+
+      function changeListAll(e) {
+        listElement.textContent = "";
+        console.log(list);
+        list = listData;
+        renderList();
+      }
+      function changeListActive(e) {
+        listElement.textContent = "";
+        console.log(list);
+        list = listData.filter((item) => item.isTrue !== true);
+        renderList();
+      }
+      function changeListCompleted(e) {
+        listElement.textContent = "";
+        console.log(list);
+        list = listData.filter((item) => item.isTrue !== false);
+        renderList();
+      }
+
+      function clearCompleted(e) {
+        /*
+        const lowerItem = document.querySelector(".to-do-list-lower-item");
+        const lowerCheck = document.querySelector("#iconid");
+        const lowerCheckbox = document.querySelector("#checkboxid");
+        lowerItem.classList.remove("checked-item");
+        lowerCheck.classList.remove("fa-solid");
+        lowerCheck.classList.remove("fa-check");
+        lowerCheckbox.classList.remove("checked");
+        */
+
+        listElement.textContent = "";
+        console.log(list);
+        list = list.filter((item) => item.isTrue !== true);
+        console.log(list);
+        renderList();
+      }
+
+      // Add Event Listeners
+      addItem.addEventListener("keydown", addNewItem);
+      removeItems.addEventListener("click", clearCompleted);
+      clickedAll.addEventListener("click", changeListAll);
+      clickedActive.addEventListener("click", changeListActive);
+      clickedCompleted.addEventListener("click", changeListCompleted);
+      // for (let i = 0; i < checkboxItem.length; i++) {
+      //   checkboxItem[i].addEventListener("click", checkTheItem);
+      // }
+      // clicked.addEventListener("click", changeList);
+      // removeItems.addEventListener("click", clearCompleted);
+    </script>
+  </body>
+</html>
